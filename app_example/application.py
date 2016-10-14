@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 from flask import Flask
+from .views import Ping
 
-app = Flask(__name__)
 
+def create_app():
+    app = Flask(__name__)
 
-@app.route("/", methods=['GET'])
-def ping():
-    return "OK, I'm alive"
+    app.add_url_rule('/', view_func=Ping.as_view('index'))
+
+    return app

@@ -36,3 +36,9 @@ def jwt_payload_gen(superuser_permissions):
         }
 
     return _gen_payload
+
+
+@pytest.fixture
+def app():
+    from app_example.application import create_app
+    return create_app()

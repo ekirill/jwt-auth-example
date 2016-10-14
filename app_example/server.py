@@ -6,7 +6,5 @@ sys.path.append(os.path.abspath(
 ))
 
 
-from app_example.application import app
-
-
-app.run(port=8000)
+from app_example.application import create_app
+create_app().run(port=8000)
