@@ -2,3 +2,5 @@
 
 .idea
 .python-version
+.cache/
+*.egg-info
