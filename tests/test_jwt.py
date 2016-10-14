@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 import pytest
-
-from jwt_auth.jwt import JWTApi
-from jwt_auth.exceptions import JWTVerificationError
+from ekirill_auth_api.jwt.exceptions import JWTVerificationError
+from ekirill_auth_api.jwt.api import JWTApi
 
 
 def test_payload_encode_decode(secret, jwt_payload_gen):
