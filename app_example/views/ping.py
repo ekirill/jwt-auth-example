@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 from flask.views import MethodView
-from flask import jsonify
+from . import OK_RESULT
 
 
 class Ping(MethodView):
     def get(self):
-        return jsonify({
-            "status": "ALIVE"
-        })
+        return OK_RESULT()
