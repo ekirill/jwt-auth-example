@@ -2,7 +2,6 @@
 from ekirill_auth_api.jwt.api import JWTApi
 from ekirill_auth_api.jwt.exceptions import JWTInvalidToken, JWTVerificationError
 
-from . import SECRET_KEY, USER_CREDENTIALS, USER_ALLOWED_RESOURCES
 from .permissions import UserPermissions
 from .user import User
 
@@ -12,8 +11,15 @@ class AuthError(Exception):
 
 
 class AuthAPI(object):
-    def __init__(self):
-        self._jwt_api = JWTApi(SECRET_KEY)
+    def __init__(self, secret_key, credentials_checker, permissions_fetcher):
+        """
+        :type secret_key: str
+        :type credentials_checker: (str, str)->bool
+        :type permissions_fetcher: (str)->list(int)
+        """
+        self._jwt_api = JWTApi(secret_key)
+        self._credentials_checker = credentials_checker
+        self._permissions_fetcher = permissions_fetcher
 
     def auth_by_credentials(self, login, password):
         """
@@ -22,10 +28,10 @@ class AuthAPI(object):
         :type password: str
         :rtype: ekirill_auth_api.auth.user.User
         """
-        if USER_CREDENTIALS.get(login) != password:
+        if not self._credentials_checker(login, password):
             raise AuthError('Login or password is invalid')
 
-        allowed_resources = USER_ALLOWED_RESOURCES.get(login, [])
+        allowed_resources = self._permissions_fetcher(login)
 
         return User(
             login=login,

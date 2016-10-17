@@ -2,8 +2,8 @@
 from ekirill_auth_api.auth.permissions import UserPermissions
 
 
-def test_permissions_dump_restore(user_permissions):
-    allowed_resourses = user_permissions('ekirill')
+def test_permissions_dump_restore(permissions_fetcher):
+    allowed_resourses = permissions_fetcher('ekirill')
 
     perms = UserPermissions.from_allowed_resources(allowed_resourses)
     assert set(allowed_resourses) == set(perms.get_allowed_resourses())

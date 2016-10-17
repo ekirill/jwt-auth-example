@@ -53,9 +53,9 @@ def predefined_permissions():
 
 
 @pytest.fixture
-def user_permissions(predefined_permissions):
+def permissions_fetcher(predefined_permissions):
     def _get_permissions(login):
-        return predefined_permissions.get(login)
+        return predefined_permissions.get(login, [])
 
     return _get_permissions
 
@@ -65,3 +65,11 @@ def predefined_credentials():
     return {
         'ekirill': 'ekirill',
     }
+
+
+@pytest.fixture
+def credentials_checker(predefined_credentials):
+    def _check_credentials(login, password):
+        return predefined_credentials.get(login) == password
+
+    return _check_credentials
