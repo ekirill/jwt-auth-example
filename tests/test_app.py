@@ -35,14 +35,34 @@ def test_login(client, credentials_checker):
         assert response.json['data']['token']
 
 
-def test_app_resource_01(client):
+def test_app_resource_01(client, perform_login, perform_logout):
+    response = client.get('/api/v1/resource_01.json')
+    assert response.status_code == 403
+
+    perform_login(client, 'ekirill')
     response = client.get('/api/v1/resource_01.json')
     assert response.status_code == 200
     assert response.json['status'] == 'OK'
     assert response.json['data']['juicy_data'] == 42
 
+    perform_logout(client)
+    perform_login(client, 'someuser')
+    response = client.get('/api/v1/resource_01.json')
+    assert response.status_code == 403
 
-def test_app_resource_02(client):
+
+def test_app_resource_02(client, perform_login, perform_logout):
+    response = client.get('/api/v1/resource_02.json')
+    assert response.status_code == 403
+
+    perform_login(client, 'ekirill')
+    response = client.get('/api/v1/resource_02.json')
+    assert response.status_code == 200
+    assert response.json['status'] == 'OK'
+    assert response.json['data']['sugar_data'] == 24
+
+    perform_logout(client)
+    perform_login(client, 'someuser')
     response = client.get('/api/v1/resource_02.json')
     assert response.status_code == 200
     assert response.json['status'] == 'OK'

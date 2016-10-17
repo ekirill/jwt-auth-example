@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime, timedelta
+from flask import make_response
 
 from ekirill_auth_api.auth.api import AuthAPI, AuthError
 from .hardcode import (
@@ -41,7 +42,7 @@ def unsign_response(response):
     :type response: flask.Response
     :rtype: response
     """
-    exp = datetime.now() - timedelta(days=1)
+    exp = datetime.fromtimestamp(0)
     response.set_cookie(AUTH_COOKIE, value='', expires=exp)
     return response
 
@@ -57,8 +58,25 @@ def get_user(request):
 
     api = get_auth_api()
     try:
-        user = api.auth_by_jwt(jwt)
+        user = api.auth_by_jwt(jwt.encode('ascii'))
     except AuthError:
         return None
 
     return user
+
+
+def get_access_denied_response():
+    return make_response("ACCESS DENIED", 403)
+
+
+def permission_required(request, resource_id):
+    def real_decorator(func):
+        def wrapper(*args, **kwargs):
+            user = get_user(request)
+            if not user or not user.is_allowed(resource_id):
+                return get_access_denied_response()
+
+            return func(*args, **kwargs)
+
+        return wrapper
+    return real_decorator
