@@ -42,3 +42,19 @@ def jwt_payload_gen(superuser_permissions):
 def app():
     from app_example.application import create_app
     return create_app()
+
+
+@pytest.fixture
+def predefined_permissions():
+    return {
+        'ekirill': [1, 2],
+        'someuser': [2],
+    }
+
+
+@pytest.fixture
+def user_permissions(predefined_permissions):
+    def _get_permissions(login):
+        return predefined_permissions.get(login)
+
+    return _get_permissions
