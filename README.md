@@ -13,7 +13,7 @@ his permissions are represented as int('1010', 2).
 To store permissions, which id is more than max bits in an int
 I use an array of integers and split bits among them.
 
-This access system is used in my simple flask application.
+This access system is used in my simple flask application (**app_example**).
 Flask is used for simple routing only.
 Login and logout methods are provided. These methods store and delete
 auth cookies. Two api url with different permissions are created for
