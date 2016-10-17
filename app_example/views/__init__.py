@@ -1,15 +1,19 @@
 # -*- coding: utf-8 -*-
-from flask import jsonify
+import json
+from flask import make_response
 
 
 def OK_RESULT(data=None):
+
     result = {
         'status': 'OK',
     }
     if data:
         result['data'] = data
 
-    return jsonify(result)
+    response = make_response(json.dumps(result))
+    response.headers['Content-type'] = 'application/json'
+    return response
 
 
 def FAIL_RESULT(errors):
@@ -18,4 +22,6 @@ def FAIL_RESULT(errors):
         'errors': errors
     }
 
-    return jsonify(result)
+    response = make_response(json.dumps(result))
+    response.headers['Content-type'] = 'application/json'
+    return response
