@@ -18,3 +18,7 @@ Flask is used for simple routing only.
 Login and logout methods are provided. These methods store and delete
 auth cookies. Two api url with different permissions are created for
 showcase. See **tests/test_app.py** as usage examples.
+
+#TODO
+The system requires invalidation mechanism. For example, when user permissions change we
+should store his login somewhere. Next time he accesses our api, we should update his JWT cookie.
