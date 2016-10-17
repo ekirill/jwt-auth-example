@@ -58,3 +58,10 @@ def user_permissions(predefined_permissions):
         return predefined_permissions.get(login)
 
     return _get_permissions
+
+
+@pytest.fixture
+def predefined_credentials():
+    return {
+        'ekirill': 'ekirill',
+    }

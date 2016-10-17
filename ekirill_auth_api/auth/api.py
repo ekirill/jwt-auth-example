@@ -42,7 +42,7 @@ class AuthAPI(object):
         except (JWTInvalidToken, JWTVerificationError) as e:
             raise AuthError('Token is invalid: {}'.format(e))
 
-        if 'login' not in user_data or 'permissions not in user_data':
+        if 'login' not in user_data or 'permissions' not in user_data:
             raise AuthError('Token is invalid, it has no login and premissions information')
 
         login = user_data['login']
@@ -56,7 +56,7 @@ class AuthAPI(object):
             permissions=permissions,
         )
 
-    def gen_jwt(self, user):
+    def get_jwt(self, user):
         """
         :type user: ekirill_auth_api.auth.user.User
         :rtype: bytes
